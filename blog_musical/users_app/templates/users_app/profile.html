@@ -3,10 +3,12 @@
 {% block content %}
 <h3>{{msj}}</h3>
 {% if user %}
-<p>Usuario: {{user.username}}</p>
-<p>Contraseña: {{user.password}}</p>
+<h3 class="mb-5">Usuario: {{user.username}}</h3>
+<h3 class="mb-5">Email: {{user.email}}</h3>
+<h3 class="mb-5">Nombre: {{user.first_name}}</h3>
+<h3 class="mb-5">Apellido: {{user.last_name}}</h3>
 
-<a class="btn btn-primary" href="{% url 'edit_profile' user.username %}">Editar Usuario</a>
+<a class="btn btn-primary" href="{% url 'edit_profile' user.id %}">Editar Usuario</a>
 {% endif %}
 
 {% endblock %}
