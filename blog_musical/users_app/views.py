@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from blog_app.models import Post
 from .forms import UserRegisterForm, UserEditForm
+from .models import Avatar
 
 
 # Create your views here.
@@ -56,9 +57,9 @@ def register(request):
 
 
 def profile(request):
-    current_user = request.user
-    user = User.objects.get(username=current_user)
-    context = {"user":user}
+    user = User.objects.get(username=request.user)
+    img = Avatar.objects.filter(user=user)[0].img.url
+    context = {"user":user, "img":img}
     return render(request, "users_app/profile.html", context)
 
 
