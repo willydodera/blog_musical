@@ -41,7 +41,7 @@ def logout(request):
 
 def register(request):
     if request.method == "POST":
-        form = UserRegisterForm(request.POST)
+        form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             username = form.cleaned_data["username"]
@@ -58,7 +58,9 @@ def register(request):
 
 def profile(request):
     user = User.objects.get(username=request.user)
-    img = Avatar.objects.filter(user=user)[0].img.url
+    img = Avatar.objects.filter(user=user)
+    if img:
+        img = (Avatar.objects.filter(user=user))[0].img.url
     context = {"user":user, "img":img}
     return render(request, "users_app/profile.html", context)
 
@@ -83,4 +85,5 @@ def edit_profile(request, id):
         form = UserEditForm(instance=user)
         context = {"form": form}
         return render(request, "users_app/edit_profile.html", context)
-        
+
+
