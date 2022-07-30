@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import redirect, render, HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.views import LogoutView
@@ -45,9 +45,10 @@ def register(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data["username"]
-            msj = f"Usuario {username} creado con éxito"
-            context = {"form": form, "msj":msj}
-            return render(request, "users_app/register.html", context)
+            #msj = f"Usuario {username} creado con éxito"
+            #context = {"form": form, "msj":msj}
+            #return render(request, "users_app/register.html", context)
+            return redirect('create_avatar', username=username)
         else:
             return HttpResponse("Formulario invalido")
     else:
@@ -81,9 +82,22 @@ def edit_profile(request, id):
             msj = f"Usuario {user.username} editado con éxito"
             context = {"msj":msj, "user":user}
             return render(request, "users_app/profile.html", context)
+            
     else:
         form = UserEditForm(instance=user)
         context = {"form": form}
         return render(request, "users_app/edit_profile.html", context)
+
+
+def create_avatar(request, username):
+    # Crea avatar predeterminado.
+    user = User.objects.get(username=username)
+    avatar = Avatar(user=user)
+    avatar.save()
+    form = UserRegisterForm()
+    msj = f"Usuario {username} creado con éxito"
+    context = {"form": form, "msj":msj}
+    return render(request, "users_app/register.html", context)
+
 
 
