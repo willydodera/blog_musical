@@ -1,16 +1,21 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 class Post(models.Model):
     title = models.CharField(max_length=30)
     subtitle = models.CharField(max_length=50)
-    description = models.CharField(max_length=150)
-    author_id = models.IntegerField()
-    publication_date = models.DateTimeField(auto_now_add=True)
-    img = models.ImageField(blank=True, null=True)
+    content = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    date = models.DateTimeField(default=timezone.now)
+    img = models.ImageField(default='posts/post_default.png',upload_to='posts', null=True, blank=True)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+	    ordering = ['-date']
 
 
 
