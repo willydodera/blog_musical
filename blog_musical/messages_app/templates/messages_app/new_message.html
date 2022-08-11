@@ -1,0 +1,22 @@
+{% extends 'main_app/base.html' %}
+{% load humanize %}
+{% block content %}
+
+
+<div class="container d-flex justify-content-center align-items-center h-100">
+    <p>{{msg}}</p>
+    <div class="container d-flex justify-content-center align-items-center">
+        <p>{{msj}}</p>
+        <form class="container" action="" method="POST"> {% csrf_token %}
+            {{form.as_p}}
+            <input class="btn btn-primary mb-4" type="submit" value="Buscar">
+            {% for user in users %}
+            {% if user != request.user %}
+            <p><a style="text-decoration: none;" class="btn btn-success text-white" href="{% url 'chat' user.id %}">{{user.username}}</a><--- click para enviar mensaje</p>
+            {% endif %}
+            {% endfor %}
+        </form>
+    </div>
+</div>
+{% endblock %}
+

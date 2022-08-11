@@ -1,0 +1,35 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<header class="bg-transparent">
+    <div class="container">
+        <div class="text-center my-5">
+            <h1 class="fw-bolder">{{post.title}}</h1>
+            <p class="lead mb-0">{{post.subtitle}}</p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="card mx-auto my-4" style="max-width: 50vw;">
+        <a href="#!"><img class="card-img-top border-bottom border-secondary" src="{% if post.img %}  {{post.img.url}} {% endif %}" alt="No existe una imagen para este post" /></a>
+        <div class="card-body text-dark">
+            <p class="card-text">{{post.content}}</p>
+            <div class="small text-muted">{{post.date|naturaltime}}</div>
+            {% if post.author == user %}
+                <p class="small text-muted">Autor: Tú</p>
+            {% else %}
+                <p class="small text-muted">Autor: @{{post.author}}</p>
+            {% endif %}
+            {% if post.author == user or user.username == 'admin' %}
+                <a class="btn btn-danger" href="{% url 'delete_post' post.id %}">Eliminar Post</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

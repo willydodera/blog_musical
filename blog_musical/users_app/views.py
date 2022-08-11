@@ -8,9 +8,10 @@ from django.contrib import messages
 from blog_app.models import Post
 from .forms import UserRegisterForm, UserEditForm
 from .models import Avatar
+from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
+
 def login_request(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data = request.POST)
@@ -21,7 +22,7 @@ def login_request(request):
             if user is not None:
                 login(request, user)
                 posts = Post.objects.all()
-                return render(request, "blog_app/pages.html", {"form":form, "mensaje":f"Bienvenido {usuario}", "posts":posts})
+                return redirect('pages', page_id=1)
             else:
                 return render(request, "users_app/login.html", {"form":form, "mensaje":"Usuario o contraseña incorrectos"})
         else:
@@ -30,6 +31,7 @@ def login_request(request):
     return render(request, "users_app/login.html", {"form":form})
 
 
+@login_required
 def logout(request):
     logout(request)
 
@@ -44,7 +46,7 @@ def register(request):
             avatar = Avatar(user=user)
             avatar.save()
             login(request, user)
-            return redirect('home')
+            return redirect('profile')
         else:
             for msg in form.error_messages:
                 messages.error(request, form.error_messages[msg])
@@ -55,12 +57,14 @@ def register(request):
         return render(request, "users_app/register.html", {"form": form})
 
 
+@login_required
 def delete_user(request):
     user = request.user
     user.delete()
     return redirect('logout')
 
 
+@login_required
 def profile(request):
     user = User.objects.get(username=request.user)
     img = Avatar.objects.filter(user=user)
@@ -70,6 +74,7 @@ def profile(request):
     return render(request, "users_app/profile.html", context)
 
 
+@login_required
 def edit_profile(request):
     user = request.user
     if request.method == "POST":

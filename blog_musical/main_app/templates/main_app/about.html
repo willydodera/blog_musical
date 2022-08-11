@@ -1,0 +1,31 @@
+{% extends 'main_app/base.html' %}
+{% load static %}
+{% block content %}
+<div class="h-100 align-items-center d-flex justify-content-center">
+  <div>
+    <h1>Sobre nosotros</h1>
+    <div class="d-flex flex-row my-3 align-items-center">
+      <img style="width: 20vh; height: 20vh; border-radius: 50%" src="{% static 'magali.jpg' %}" alt="">
+      <p class="lead mx-2"><img src="" alt=""> <strong>Magali Kerszenblat:</strong> Soy una estudiante avanzada de la carrera
+        de Actuario en
+        la Universidad de Buenos Aires. Soy una persona proactiva y me gusta estar constantemente aprendiendo nuevas
+        cosas. Actualmente me encuentro trabajando en el area de seguros y por otro lado tengo un emprendimiento de
+        venta de ropa. Considero que la programación es fundamental y sirve para facilitar todos los procesos, es por
+        eso que me ahonde en este mundo. Por otro lado me gusta mucho la musica y me parece una gran herramienta de
+        expresión.</p>
+    </div>
+    <div class="d-flex flex-row my-3 align-items-center">
+      <img style="width: 20vh; height: 20vh; border-radius: 50%" src="{% static 'william.jpg' %}" alt="">
+      <p class="lead mx-2"><img src="" alt=""> <strong>William Dodera:</strong> Soy técnico mecánico y también cursé un año
+        completo de Licenciatura en Automatización. Actualmente soy encargado de un local de comidas y en mis tiempos libres
+        aprendo Django. Me gusta la música y la tecnología. Me considero una persona capaz,
+        predispuesta a aprender y autoexigente.
+        Me gusta mantener buenas relaciones
+        interpersonales y trabajar de manera
+        organizada.</p>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

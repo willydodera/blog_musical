@@ -2,11 +2,18 @@
 
 {% block content %}
 <p>{{msj}}</p>
-<form class="form" method="POST" style="text-align: left;" enctype=”multipart/form-data”> {% csrf_token %}
-    {{ form.as_p }}
-
-    <button type="submit" id="submit">Registrarse</button>
-</form>
+<div class="container d-flex justify-content-center align-items-center h-100">
+    <div class="">
+        <h1 class="fw-bolder mb-5">Crear Usuario</h1>
+        <p>{{msj}}</p>
+        <form class="form" method="POST" style="text-align: left;" enctype=”multipart/form-data”> {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" id="submit">Registrarse</button>
+        </form>
+    </div>
+</div>
 
 {% endblock %}
+
+
 
