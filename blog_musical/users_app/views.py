@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib import messages
 from blog_app.models import Post
 from .forms import UserRegisterForm, UserEditForm
 from .models import Avatar
@@ -20,7 +21,7 @@ def login_request(request):
             if user is not None:
                 login(request, user)
                 posts = Post.objects.all()
-                return render(request, "blog_app/blog.html", {"form":form, "mensaje":f"Bienvenido {usuario}", "posts":posts})
+                return render(request, "blog_app/pages.html", {"form":form, "mensaje":f"Bienvenido {usuario}", "posts":posts})
             else:
                 return render(request, "users_app/login.html", {"form":form, "mensaje":"Usuario o contraseña incorrectos"})
         else:
@@ -42,16 +43,16 @@ def register(request):
             user = User.objects.get(username=username)
             avatar = Avatar(user=user)
             avatar.save()
-            form = AuthenticationForm()
-            msj = f"Usuario {username} creado con éxito"
-            context = {"form": form, "msj":msj}
-            return render(request, "main_app/home.html", context)
+            login(request, user)
+            return redirect('home')
         else:
-            return HttpResponse("Formulario invalido")
+            for msg in form.error_messages:
+                messages.error(request, form.error_messages[msg])
+            return render(request, "users_app/register.html", {"form": form})
+
     else:
         form = UserRegisterForm()
-        context = {"form": form}
-        return render(request, "users_app/register.html", context)
+        return render(request, "users_app/register.html", {"form": form})
 
 
 def delete_user(request):
